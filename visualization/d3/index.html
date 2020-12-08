@@ -4,10 +4,10 @@
   <script src="https://d3js.org/d3.v4.min.js"></script>
   <script src="http://dimplejs.org/dist/dimple.v2.3.0.min.js"></script>
   <script type="text/javascript">
-    var svg = dimple.newSvg("#chartContainer", 590, 400);
+    var svg = dimple.newSvg("#chartContainer", 1000, 1000);
     d3.tsv("./data.tsv", function (data) {
       var myChart = new dimple.chart(svg, data);
-      myChart.setBounds(95, 25, 475, 335)
+      myChart.setBounds(95, 25, 800, 800)
       var x = myChart.addCategoryAxis("x", "Media");
       var y = myChart.addCategoryAxis("y", "Keyword");
       var z = myChart.addMeasureAxis("z", "Normalized Value");
