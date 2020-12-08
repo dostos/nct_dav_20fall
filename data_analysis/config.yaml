@@ -1,0 +1,28 @@
+cache_dir: cache
+publication_bias:
+  Axios: 3
+  Economist: 2
+  Refinery 29: -1
+  The Verge: -1
+  Washington Post: -1
+  Business Insider: -1
+  Fox News: 5
+  New Republic: -1
+  Reuters: 3
+  TMZ: -1
+  Wired: -1
+  Buzzfeed News: 1
+  Gizmodo: -1
+  New Yorker: 1
+  TechCrunch: -1
+  Vice: -1
+  CNBC: -1
+  Hyperallergic: -1
+  People: -1
+  The Hill: 3
+  Vice News: -1
+  CNN: 1
+  Mashable: -1
+  Politico: 2
+  The New York Times: 2
+  Vox: 1
