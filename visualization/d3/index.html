@@ -27,12 +27,12 @@ circle {
 
 .x.axis path,
 .x.axis line {
-    display: none;
+    stroke: none;
 }
 
 .y.axis path,
 .y.axis line {
-    display: none;
+    stroke: none;
 }
 </style>
 <div class="chart"></div>
@@ -55,6 +55,46 @@ circle {
         .call(responsivefy)
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    //Append a defs (for definition) element to your SVG
+    var defs = svg.append("defs");
+
+    //Append a linearGradient element to the defs and give it a unique id
+    var linearGradient = defs.append("linearGradient")
+        .attr("id", "linear-gradient");
+    //Horizontal gradient
+    linearGradient
+        .attr("x1", "0%")
+        .attr("x2", "0%")
+        .attr("y1", "0%")
+        .attr("y2", "100%");
+
+    //Set the color for the start (0%)
+    linearGradient.append("stop")
+        .attr("offset", "0%")
+        .attr("stop-color", "#2E64A0"); 
+
+    //Set the color for the end (100%)
+    linearGradient.append("stop")
+        .attr("offset", "100%")
+        .attr("stop-color", "#CF2027"); 
+    
+    var lineGenerator = d3.line()
+        .curve(d3.curveNatural);
+
+    var points = [
+        [10, 20],
+        [- 5, height /2],
+        [10, height - 20]
+    ];
+
+    var pathData = lineGenerator(points);
+
+    svg.append('path')
+        .attr('d', pathData)
+        .attr("stroke-width", function(d) { return 2; })
+        .attr("stroke", "url(#linear-gradient)")
+        .attr("fill", "none");
 
     var x = d3.scaleBand().rangeRound([0, width]);
     var y = d3.scaleBand().rangeRound([height, 0]);
@@ -102,6 +142,7 @@ circle {
         svg.append("g")
             .attr("class", "y axis")
             .call(d3.axisLeft(y));
+            .color()
 
         var legend = d3.select(".legend")
             .append("svg")
