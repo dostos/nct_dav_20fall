@@ -7,7 +7,7 @@ body {
 }
   
 text {
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Lucida Console', monospace;
     font-size: 10px;
     font-weight: 900;
     pointer-events: none;
@@ -56,7 +56,6 @@ div.tooltip {
     var width = 500 - margin.left - margin.right;
     var height = 600 - margin.top - margin.bottom;
     var clickToggle = false;
-    var color = d3.scaleOrdinal(["#FA8334", "#AFFC41", "#19647E", "#7FDDDD", "#949396", "#DCF763", "#00C6D0", "#C1C1C1", "#666666", "#FDCDAE"]);
     var radius = d3.scaleLinear()
         .domain([0, 280])
         .range([15, 23]);
@@ -68,46 +67,6 @@ div.tooltip {
         .call(responsivefy)
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-    //Append a defs (for definition) element to your SVG
-    var defs = svg.append("defs");
-
-    //Append a linearGradient element to the defs and give it a unique id
-    var linearGradient = defs.append("linearGradient")
-        .attr("id", "linear-gradient");
-    //Horizontal gradient
-    linearGradient
-        .attr("x1", "0%")
-        .attr("x2", "0%")
-        .attr("y1", "0%")
-        .attr("y2", "100%");
-
-    //Set the color for the start (0%)
-    linearGradient.append("stop")
-        .attr("offset", "0%")
-        .attr("stop-color", "#2E64A0"); 
-
-    //Set the color for the end (100%)
-    linearGradient.append("stop")
-        .attr("offset", "100%")
-        .attr("stop-color", "#CF2027"); 
-    
-    var lineGenerator = d3.line()
-        .curve(d3.curveNatural);
-
-    var points = [
-        [10, 20],
-        [- 5, height /2],
-        [10, height - 20]
-    ];
-
-    var pathData = lineGenerator(points);
-
-    svg.append('path')
-        .attr('d', pathData)
-        .attr("stroke-width", function(d) { return 2; })
-        .attr("stroke", "url(#linear-gradient)")
-        .attr("fill", "none");
 
     var x = d3.scaleBand().rangeRound([0, width]);
     var y = d3.scaleBand().rangeRound([height, 0]);
@@ -126,8 +85,15 @@ div.tooltip {
 
         y.domain(data.map(function (d) { return d["Media"]; }));
         x.domain(keywordNames);
-
-        color.domain(keywordNames);
+        
+        var keywordColor = d3.scaleOrdinal()
+                            .domain(keywordNames)
+                            .range(
+                                d3.range(keywordNames.length)
+                                .map(d3.scaleLinear()
+                                .domain([0, keywordNames.length - 1])
+                                .range(["#2E64A0", "#CF2027"])
+                                .interpolate(d3.interpolateLab)));
 
         var rows = svg.selectAll(".row")
             .data(data)
@@ -145,7 +111,7 @@ div.tooltip {
 
         var circle = cells.append("circle")
             .attr("class", function (d) { return d.className = d.name.replace(/[\ ,/-]+/g, "-").toLowerCase(); })
-            .style('fill', function (d, i) { return color(d.name); })
+            .style('fill', function (d, i) { return keywordColor(d.name); })
             .attr("cx", x.bandwidth() / 2)
             .attr("cy", y.bandwidth() / 2)
             .attr("r", function (d) { return 15 * d.value; })
@@ -159,7 +125,7 @@ div.tooltip {
                     .duration(50)
                     .style("opacity", 1);
 
-                div.style("color", function (i) { return color(d.name); });
+                div.style("color", function (i) { return keywordColor(d.name); });
 
                 div.html(d.count)
                     .style("left", (d3.event.pageX + 10) + "px")
@@ -183,7 +149,7 @@ div.tooltip {
             .call(d3.axisBottom(x))
             .selectAll("text")
                 .attr("transform", "rotate(-30)")
-                .attr("dx", "-5px")
+                .attr("dx", "-15px")
                 .attr("dy", "-5px");
 
         svg.append("g")
@@ -191,7 +157,7 @@ div.tooltip {
             .call(d3.axisLeft(y))
             .selectAll("text")
                 .attr("transform", "rotate(-30)")
-                .attr("dx", "-5px")
+                .attr("dx", "5px")
                 .attr("dy", "-10px");
 
         var legend = d3.select(".legend")
@@ -208,7 +174,7 @@ div.tooltip {
             .attr("transform", function (d, i) { return "translate(0," + i * y.bandwidth() + ")"; });
 
         legendG.append("circle")
-            .style('fill', function (d) { return color(d.name); })
+            .style('fill', function (d) { return keywordColor(d.name); })
             .attr("cx", 20)
             .attr("cy", 20)
             .attr("r", 15)
