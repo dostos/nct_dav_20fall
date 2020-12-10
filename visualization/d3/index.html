@@ -18,6 +18,18 @@ circle {
     fill-opacity: 0.9;
 }
 
+div.tooltip {
+     position: absolute;
+     text-align: center;
+     padding: .5rem;
+     background: #FFFFFF;
+     color: #313639;
+     border: 1px solid #313639;
+     border-radius: 8px;
+     pointer-events: none;
+     font-size: 1.3rem;
+}
+
 .axis path,
 .axis line {
     fill: none;
@@ -34,6 +46,7 @@ circle {
 .y.axis line {
     stroke: none;
 }
+
 </style>
 <div class="chart"></div>
 <script src="https://d3js.org/d3.v4.min.js"></script>
@@ -99,12 +112,16 @@ circle {
     var x = d3.scaleBand().rangeRound([0, width]);
     var y = d3.scaleBand().rangeRound([height, 0]);
 
+    var div = d3.select("body").append("div")
+     .attr("class", "tooltip")
+     .style("opacity", 0);
+
     d3.csv("./data_1.csv", function (error, data) {
 
-        var keywordNames = d3.keys(data[0]).filter(function (key) { return key !== "Media" && key !== "Bias Level"; });
+        var keywordNames = d3.keys(data[0]).filter(function (key) { return key !== "Media" && key !== "Bias Level" && !key.includes("_count"); });
 
         data.forEach(function (d) {
-            d.groups = keywordNames.map(function (name) { return { name: name, value: +d[name] }; });
+            d.groups = keywordNames.map(function (name) { return { name: name, value: +d[name], count:+d[name+"_count"] }; });
         });
 
         y.domain(data.map(function (d) { return d["Media"]; }));
@@ -132,7 +149,33 @@ circle {
             .attr("cx", x.bandwidth() / 2)
             .attr("cy", y.bandwidth() / 2)
             .attr("r", function (d) { return 15 * d.value; })
-            .on("click", highlightCircles);
+            .on("click", highlightCircles)
+            .on("mouseover", function(d) {		
+                d3.select(this).transition()
+                    .duration('50')
+                    .attr("opacity", 0.5);
+
+                div.transition()
+                    .duration(50)
+                    .style("opacity", 1);
+
+                div.style("color", function (i) { return color(d.name); });
+
+                div.html(d.count)
+                    .style("left", (d3.event.pageX + 10) + "px")
+                    .style("top", (d3.event.pageY - 15) + "px");
+
+                })					
+            .on("mouseout", function(d) {			
+                d3.select(this).transition()
+                    .duration('50')
+                    .attr("opacity", 1);
+
+                div.transition()
+                    .duration('50')
+                    .style("opacity", 0);
+            });
+        
 
         svg.append("g")
             .attr("class", "x axis")
