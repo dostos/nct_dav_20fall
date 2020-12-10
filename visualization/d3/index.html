@@ -131,7 +131,7 @@ circle {
             .style('fill', function (d, i) { return color(d.name); })
             .attr("cx", x.bandwidth() / 2)
             .attr("cy", y.bandwidth() / 2)
-            .attr("r", function (d) { return d.value * 2 * Math.sqrt(x.bandwidth()^2 + y.bandwidth()^2); })
+            .attr("r", function (d) { return 15 * d.value; })
             .on("click", highlightCircles);
 
         svg.append("g")
@@ -142,7 +142,7 @@ circle {
         svg.append("g")
             .attr("class", "y axis")
             .call(d3.axisLeft(y))
-            .color()
+            // .color()
 
         var legend = d3.select(".legend")
             .append("svg")
