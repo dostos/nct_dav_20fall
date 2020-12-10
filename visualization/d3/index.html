@@ -141,7 +141,6 @@ div.tooltip {
                     .duration('50')
                     .style("opacity", 0);
             });
-        
 
         svg.append("g")
             .attr("class", "x axis")
@@ -191,11 +190,11 @@ div.tooltip {
     function highlightCircles(d) {
         if (!clickToggle) {
             var className = d.name.replace(/[\ ,/-]+/g, "-").toLowerCase();
-            d3.selectAll("circle, text").transition().style("fill-opacity", function (elem) {
+            d3.selectAll("circle").transition().style("fill-opacity", function (elem) {
                 if (elem.className !== className) return 0.07;
             })
         } else {
-            d3.selectAll("circle, text").transition().style("fill-opacity", 1);
+            d3.selectAll("circle").transition().style("fill-opacity", 1);
         }
         clickToggle = !clickToggle;
     }
