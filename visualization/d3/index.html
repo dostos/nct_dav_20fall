@@ -99,7 +99,7 @@ circle {
     var x = d3.scaleBand().rangeRound([0, width]);
     var y = d3.scaleBand().rangeRound([height, 0]);
 
-    d3.csv("./data_original.csv", function (error, data) {
+    d3.csv("./data_1.csv", function (error, data) {
 
         var keywordNames = d3.keys(data[0]).filter(function (key) { return key !== "Media" && key !== "Bias Level"; });
 
