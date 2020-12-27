@@ -52,7 +52,7 @@ div.tooltip {
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
 <script>
-    var margin = { top: 10, right: 20, bottom: 70, left: 120 };
+    var margin = { top: 30, right: 20, bottom: 70, left: 120 };
     var width = 500 - margin.left - margin.right;
     var height = 600 - margin.top - margin.bottom;
     var clickToggle = false;
@@ -63,7 +63,7 @@ div.tooltip {
     var svg = d3.select(".chart")
         .append("svg")
         .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom + 20)
+        .attr("height", height + margin.top + margin.bottom + 30)
         .call(responsivefy)
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -71,7 +71,7 @@ div.tooltip {
     svg.append("text")
         .attr("text-anchor", "middle")  
         .attr("x", (width) / 2)
-        .attr("y", height + margin.bottom)
+        .attr("y", -10)
         .style("font-style", "bold")
         .style("font-size", "15px")
         .text("Keyword-based Identification of Media Bias in News Articles");
@@ -79,47 +79,22 @@ div.tooltip {
     svg.append("text")
         .attr("text-anchor", "middle")  
         .attr("x", (width) / 2.5)
-        .attr("y", height + margin.bottom + 20)
+        .attr("y", 0)
         .style('fill', 'grey')
         .style("font-style", "italic")
         .style("font-size", "10px") 
-        .text("(description)")    
-        .on("mouseover", function(d) {		
-                d3.select(this).transition()
-                    .duration('50')
-                    .attr("opacity", 0.5);
-
-                div.transition()
-                    .duration(50)
-                    .style("opacity", 1);
-
-                div.style("color", function (i) { return keywordColor(d.name); });
-
-                div.html(d.count)
-                    .style("left", (d3.event.pageX + 10) + "px")
-                    .style("top", (d3.event.pageY - 15) + "px");
-
-                })					
-        .on("mouseout", function(d) {			
-            d3.select(this).transition()
-                .duration('50')
-                .attr("opacity", 1);
-
-            div.transition()
-                .duration('50')
-                .style("opacity", 0);
-        });
+        .text("(hover for description)");
 
     var description = svg.append("svg:image")
         .attr("xlink:href", "description.png")
         .attr("x", -(width) / 10)
-        .attr("y", (height) / 2.5)
+        .attr("y", (height) / 10)
         .attr("width", (width))
         .attr("opacity", 0)
 
     svg.append("rect")
         .attr("x", (width) / 2 - 50)
-        .attr("y", height + margin.bottom + 5)
+        .attr("y", 0)
         .attr("width", 100)
         .attr("height", 20)
         .style("fill", function (d) { return "#00000000" })
