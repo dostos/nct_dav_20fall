@@ -112,8 +112,9 @@ div.tooltip {
 
     var description = svg.append("svg:image")
         .attr("xlink:href", "description.png")
-        .attr("x", (width) / 2)
-        .attr("y", (height) / 2)
+        .attr("x", -(width) / 10)
+        .attr("y", (height) / 2.5)
+        .attr("width", (width))
         .attr("opacity", 0)
 
     svg.append("rect")
