@@ -52,7 +52,7 @@ div.tooltip {
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
 <script>
-    var margin = { top: 10, right: 20, bottom: 50, left: 120 };
+    var margin = { top: 10, right: 20, bottom: 70, left: 120 };
     var width = 500 - margin.left - margin.right;
     var height = 600 - margin.top - margin.bottom;
     var clickToggle = false;
@@ -73,13 +73,13 @@ div.tooltip {
         .attr("x", (width) / 2)
         .attr("y", height + margin.bottom)
         .style("font-style", "bold")
-        .style("font-size", "10px") 
+        .style("font-size", "15px")
         .text("Keyword-based Identification of Media Bias in News Articles");
     
     svg.append("text")
         .attr("text-anchor", "middle")  
         .attr("x", (width) / 2)
-        .attr("y", height + margin.bottom + 10)
+        .attr("y", height + margin.bottom + 20)
         .style('fill', 'grey')
         .style("font-style", "italic")
         .style("font-size", "10px") 
@@ -108,6 +108,19 @@ div.tooltip {
             div.transition()
                 .duration('50')
                 .style("opacity", 0);
+        });
+
+    svg.append("rect")
+        .attr("x", (width) / 2 - 50)
+        .attr("y", height + margin.bottom + 5)
+        .attr("width", 100)
+        .attr("height", 20)
+        .style("fill", function (d) { return "#00000000" })
+        .on("mouseover", function(d) {
+            console.log("mouseover")
+        })
+        .on("mouseout", function(d) {
+            console.log("mouseout")
         });
 
     var x = d3.scaleBand().rangeRound([0, width]);
