@@ -124,12 +124,10 @@ div.tooltip {
         .attr("height", 20)
         .style("fill", function (d) { return "#00000000" })
         .on("mouseover", function(d) {
-            console.log("mouseover")
             description.raise()
             description.attr("opacity", 1)
         })
         .on("mouseout", function(d) {
-            console.log("mouseout")
             description.lower()
             description.attr("opacity", 0)
         });
