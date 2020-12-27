@@ -114,7 +114,7 @@ div.tooltip {
         .attr("xlink:href", "description.png")
         .attr("x", (width) / 2)
         .attr("y", (height) / 2)
-        .attr("z", 9999)
+        .attr("opacity", 0)
 
     svg.append("rect")
         .attr("x", (width) / 2 - 50)
@@ -124,9 +124,13 @@ div.tooltip {
         .style("fill", function (d) { return "#00000000" })
         .on("mouseover", function(d) {
             console.log("mouseover")
+            description.raise()
+            description.attr("opacity", 1)
         })
         .on("mouseout", function(d) {
             console.log("mouseout")
+            description.lower()
+            description.attr("opacity", 0)
         });
 
     var x = d3.scaleBand().rangeRound([0, width]);
