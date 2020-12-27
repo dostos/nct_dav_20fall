@@ -110,6 +110,12 @@ div.tooltip {
                 .style("opacity", 0);
         });
 
+    var description = svg.append("svg:image")
+        .attr("xlink:href", "description.png")
+        .attr("x", (width) / 2)
+        .attr("y", (height) / 2)
+        .attr("z", 9999)
+
     svg.append("rect")
         .attr("x", (width) / 2 - 50)
         .attr("y", height + margin.bottom + 5)
